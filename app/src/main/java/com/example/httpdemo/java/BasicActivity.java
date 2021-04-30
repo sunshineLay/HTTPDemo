@@ -24,6 +24,8 @@ public class BasicActivity extends AppCompatActivity {
 
     private BasicActivityBinding binding;
 
+    private Api myApi;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +33,7 @@ public class BasicActivity extends AppCompatActivity {
         binding = BasicActivityBinding.inflate(getLayoutInflater());
         LinearLayout root = binding.getRoot();
         setContentView(root);
+        myApi = RetrofitUtils.getInstance().getApi();
 
         binding.btnRequest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,7 +55,7 @@ public class BasicActivity extends AppCompatActivity {
                 Response<ResponseBody> response = null;
                 String result = "结果没有";
                 try {
-                    response = RetrofitUtils.getInstance().getApi().getData().execute();
+                    response = myApi.getData().execute();
                     result = response.body().string();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -66,11 +69,10 @@ public class BasicActivity extends AppCompatActivity {
     //同步阻塞请求
     //直接使用出现异常 - 在主线程请求网络错误【NetworkOnMainThreadException】
     private void getData() {
-
         Response<ResponseBody> response = null;
         String result = "结果没有";
         try {
-           response = RetrofitUtils.getInstance().getApi().getData().execute();
+           response = myApi.getData().execute();
            result = response.body().string();
         } catch (IOException e) {
             e.printStackTrace();
