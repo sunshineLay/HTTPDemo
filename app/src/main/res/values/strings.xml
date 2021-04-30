@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">HTTPDemo</string>
+    <string name="request_con">请求内容</string>
+    <string name="request_onclick">点击请求</string>
 </resources>
