@@ -55,7 +55,12 @@ public class BasicActivity extends AppCompatActivity {
                 Response<ResponseBody> response = null;
                 String result = "结果没有";
                 try {
-                    response = myApi.getData().execute();
+                    //没有参数
+//                    response = myApi.getData().execute();
+                    //有参数
+//                    response = myApi.getFixedData("娱乐",1,0,"1572e8b33ff76dccff6799c8d901d02e").execute();
+                    //有参数 - HTTP
+                    response = myApi.getTaobaoData("utf-8","男士卫衣","cb").execute();
                     result = response.body().string();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -67,7 +72,7 @@ public class BasicActivity extends AppCompatActivity {
     }
 
     //同步阻塞请求
-    //直接使用出现异常 - 在主线程请求网络错误【NetworkOnMainThreadException】
+    //直接在主线程使用出现异常 - 在主线程请求网络错误【NetworkOnMainThreadException】
     private void getData() {
         Response<ResponseBody> response = null;
         String result = "结果没有";

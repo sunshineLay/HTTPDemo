@@ -12,7 +12,7 @@ public class RetrofitUtils {
 
     private RetrofitUtils(){
         retrofit = new Retrofit.Builder()
-                .baseUrl("https://gank.io/api/v2/")
+                .baseUrl("http://suggest.taobao.com/")
                 .build();
         api = retrofit.create(Api.class);
     }
