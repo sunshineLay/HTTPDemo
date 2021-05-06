@@ -13,6 +13,8 @@ import com.example.httpdemo.databinding.BasicActivityBinding;
 import java.io.IOException;
 
 import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
@@ -40,9 +42,30 @@ public class BasicActivity extends AppCompatActivity {
             public void onClick(View v) {
 //                getData();
                 getChildThreadData();
+//                getAsynData();
             }
         });
     }
+
+    //异步非阻塞请求
+    private void getAsynData() {
+        myApi.getCategoryType("Girl").enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Object body = response.body();
+                if(body == null)return;
+                String result = body.toString().trim();
+                binding.tvContent.setText(result);
+                Log.e("getAsynData()", "onResponse: " + result);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("getAsynData()", "onFailure: "+ t.getMessage());
+            }
+        });
+    }
+
 
     //同步阻塞请求
     //开启子线程，在子线程中使用同步请求。- 这是在android 端同步的写法。
@@ -56,11 +79,13 @@ public class BasicActivity extends AppCompatActivity {
                 String result = "结果没有";
                 try {
                     //没有参数
-//                    response = myApi.getData().execute();
+                    response = myApi.getData().execute();
                     //有参数
 //                    response = myApi.getFixedData("娱乐",1,0,"1572e8b33ff76dccff6799c8d901d02e").execute();
                     //有参数 - HTTP
-                    response = myApi.getTaobaoData("utf-8","男士卫衣","cb").execute();
+//                    response = myApi.getTaobaoData("utf-8","男士卫衣","cb").execute();
+                    //@Path
+//                    response = myApi.getCategoryType("Girl").execute();
                     result = response.body().string();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -86,6 +111,10 @@ public class BasicActivity extends AppCompatActivity {
         binding.tvContent.setText(result);
 
     }
+
+
+
+
 
 
 }
