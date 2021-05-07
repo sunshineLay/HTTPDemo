@@ -40,9 +40,7 @@ public class BasicActivity extends AppCompatActivity {
         binding.btnRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                getData();
                 getChildThreadData();
-//                getAsynData();
             }
         });
     }
@@ -86,6 +84,7 @@ public class BasicActivity extends AppCompatActivity {
 //                    response = myApi.getTaobaoData("utf-8","男士卫衣","cb").execute();
                     //@Path
 //                    response = myApi.getCategoryType("Girl").execute();
+                    response = myApi.getUrlData("sug","utf-8","方便面","cb").execute();
                     result = response.body().string();
                 } catch (IOException e) {
                     e.printStackTrace();

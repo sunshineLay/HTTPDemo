@@ -11,11 +11,13 @@ import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.HTTP;
+import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
+import retrofit2.http.Streaming;
 import retrofit2.http.Url;
 
 /**
@@ -27,7 +29,6 @@ public interface Api {
     //GET 请求
     //没有参数的get请求
     //例子：https://gank.io/api/v2/banners
-    // categories/GanHuo
     @GET("banners")
     Call<ResponseBody> getData();
 
@@ -100,8 +101,32 @@ public interface Api {
     Call<ResponseBody> getCategoryType(@Path("category_type")String category_type_con);
 
     //@Url
+    // 实际上，@Url替代的是@GET("url_content")的"url_content"部分。
+    // 例子：http://suggest.taobao.com/sug?code=utf-8&q=男士卫衣&callback=cb
     @GET
-    Call<ResponseBody> getUrlData(@Url String url,@Query("name")String name);
+    Call<ResponseBody> getUrlData(@Url String url,@Query("code")String codeStr,
+                                  @Query("q")String qStr,@Query("callback")String cbStr);
+
+    //@Headers、@Header
+    //【强调：请求头是可以自定义的，但是要避开已经定义好的请求头】
+    //Content-Type: text/html; charset=utf-8
+    //Content-Type: multipart/form-data; boundary=something [注：对于多部分实体，boundary 是必需的]
+    //Content-type:application/json;charset=UTF-8 [常见的三种使用]
+    //更多使用可以参考【补充：网络基础】
+    @Headers({"Content-type:application/json;charset=UTF-8"})
+    @GET("user")
+    Call<ResponseBody> getHeadersData(@Header("X-version")String versionStr,@Query("name")String nameStr);//X- 代表自定义请求头的Key.
+
+    //@Streaming
+    //下载大文件时候特别有用。
+    @Streaming
+    @POST("user")
+    Call<ResponseBody> getStreamBigData();
+
+
+
+
+
 
 
 
