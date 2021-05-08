@@ -123,12 +123,15 @@ public interface Api {
     @POST("user")
     Call<ResponseBody> getStreamBigData();
 
+    //raw 提交数据格式
+    // 【常用】raw格式（方便，很多喜欢使用json传递参数的后端喜欢这种提交格式。）
+    //  这个地方不能在Retrofit中直接使用@Field的写法。而是要使用@Body的写法来进行。
+    //  解决方法：@Body + Entity
+    @Headers({"Content-type:application/json;charset=UTF-8"})
+    @POST("XXX")
+    Call<ResponseBody> getXXData(@Body UpCmd cmd);
+    //UpCmd 有两种，一种是直接的上传Cmd的实体，一种是后台有要求将实体转换为字符串以后和一个固定的Key绑定。
 
-
-
-
-
-
-
+    
 
 }
