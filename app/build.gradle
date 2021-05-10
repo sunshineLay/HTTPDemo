@@ -48,4 +48,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     //Retrofit - 里面有OKHTTP ； Retrofit 2.9.0 对应 OKHttp 3.14.9
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    //coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2'
 }
