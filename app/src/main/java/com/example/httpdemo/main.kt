@@ -40,7 +40,7 @@ fun main01(){
 
 }
 
-//3 - 桥接阻塞和非阻塞
+//3 - 桥接阻塞和非阻塞 - runBlocking - 是连接阻塞和非阻塞。
 // join()挂起函数
 //4 - 等待一个作业
 fun main02() = runBlocking<Unit>{
@@ -73,40 +73,110 @@ fun main03() = runBlocking<Unit>{
 }
 
 //作用域构建器 - CoroutineScope
-//GlobalScope - 全局构建器 - 应用程序生命周期结束才结束。
-//runBlocking - 先执行自己的，再执行launch，他会阻塞当前线程来等待。
+//GlobalScope - 全局构建器 - 应用程序生命周期结束才结束。- 像守护线程
+//coroutineScope - 先执行自己的，再执行launch，他会阻塞当前线程来等待。- 保证主协程能够执行完毕
 // 自己的部分是按顺序执行。
-// launch的部分是并行执行
-fun main() = runBlocking{
+// 同个级别的launch的部分是并行执行
+fun main04() = runBlocking{
     launch {
-        delay(1000L)
+        delay(200L)
         println("2 - 1")
     }
-    launch {
-        delay(1000L)
-        println("2 - 2")
-    }
-    launch {
-        delay(1000L)
-        println("2 - 3")
-    }
-    launch {
-        delay(1000L)
-        println("2 - 4")
-    }
+//    launch {
+//        delay(1000L)
+//        println("2 - 2")
+//    }
+//    launch {
+//        delay(1000L)
+//        println("2 - 3")
+//    }
+//    launch {
+//        delay(1000L)
+//        println("2 - 4")
+//    }
     println("4 - 1")
     //coroutineScope 是挂起函数，runBlocking 是常规函数，会阻塞。
     coroutineScope {
         launch {
-            delay(1000L)
+            delay(500L)
             println("3")
         }
-        delay(1000L)
+        delay(100L)
         println("1")
     }
     println("4")
 }
 
+//05-提取 挂起函数 重构
+fun main05() = runBlocking<Unit>{
+    launch { doWorld() }
+    println("Hello,")
+}
+
+suspend fun doWorld() {
+    delay(1000L)
+    println("doWorld")
+}
+
+// 06 - 协程很轻量
+// 启动十万个协程，并不会创建十万个线程 - 效率很高。
+fun main06() = runBlocking{
+    repeat(10_00){ i->
+        delay(10L)
+        println("K + $i")
+    }
+    println("main")
+
+}
+//07 - 全局协程更像守护线程，他是在主协程的作用时间内继续执行的。
+//进程保活。
+fun main07()= runBlocking{
+    GlobalScope.launch {
+        println("sleeping 2S - 1")
+        repeat(100){
+            i->
+            println("sleeping $i")
+            delay(500L)
+        }
+        delay(200L)
+        println("sleeping 2S - 2")
+    }
+    delay(1300L)
+    println("sleeping 3S")
+
+}
+
+//08
+//取消和超时
+//取消协程的执行
+fun main08() = runBlocking{
+    val job = launch {
+        repeat(100) { i ->
+            delay(200)
+            println("$i")
+        }
+    }
+    delay(1300L)
+    println("main:1")
+//    job.cancelAndJoin()
+//    job.join()
+    job.cancel()
+    job.join()
+    println("main:2")
+}
+//09
+// 取消是协作的
+// 如果协程正在执行计算任务，并且没有检查取消的话，不能取消。 - 检查取消 - job.cancel
+//job.cancel 其实就是检查了一下job有没有抛出异常，抛出了，正常。
+
+// 挂起函数才能被取消，launch 不是挂起函数，delay是挂起函数。关键字：suspend
+//
+
+// 10
+// 使计算代码可以取消
+fun main()= runBlocking {
+    
+}
 //线程的数据都在内存中。
 
 // Java 多线程开发 - join
