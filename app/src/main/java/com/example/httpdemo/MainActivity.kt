@@ -6,7 +6,7 @@ import com.example.httpdemo.databinding.ActivityMainBinding
 
 //viewBinding - 官方推荐
 //anko - 可以了解一下
-//直接写id - 这个插件已经deprecated了，不学习
+//直接写id - kotlin-android-extensions - 这个插件已经deprecated了，不学习
 
 //应用开发热点：
 //Kotlin - 协程 - coroutines

@@ -2,6 +2,7 @@ package com.example.httpdemo.java;
 
 import java.util.Map;
 
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -13,7 +14,10 @@ import retrofit2.http.GET;
 import retrofit2.http.HTTP;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
@@ -131,6 +135,18 @@ public interface Api {
     @POST("XXX")
     Call<ResponseBody> getXXData(@Body UpCmd cmd);
     //UpCmd 有两种，一种是直接的上传Cmd的实体，一种是后台有要求将实体转换为字符串以后和一个固定的Key绑定。
+
+    //@Multipart、@part、@PartMap
+    //处理单文件上传
+    @Multipart
+    @POST("user")
+    Call<RequestBody> getSingleFileData(@Part("name") RequestBody name, @Part MultipartBody.Part file);
+
+    //多文件上传
+    @Multipart
+    @POST("user")
+    Call<RequestBody> getMoreFileData(@PartMap Map<String,MultipartBody.Part> fileMap);
+
 
     
 
